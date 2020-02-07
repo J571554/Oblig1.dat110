@@ -1,6 +1,7 @@
 package no.hvl.dat110.rpc;
 
 import java.util.Arrays;
+import java.nio.ByteBuffer;
 
 import no.hvl.dat110.TODO;
 
@@ -16,11 +17,12 @@ public class RPCUtils {
 		byte[] encoded;
 
 		// TODO: marshall RPC identifier and string into byte array
-
-		if (true) {
-			throw new UnsupportedOperationException(TODO.method());
+		encoded = new byte[str.length()+1];
+		encoded[0] = rpcid;
+		byte[] temp = str.getBytes();
+		for(int i = 0; i < temp.length; i++) {
+			encoded[i+1] = temp[i];
 		}
-
 		return encoded;
 	}
 
@@ -29,30 +31,26 @@ public class RPCUtils {
 		String decoded;
 
 		// TODO: unmarshall String contained in data into decoded
-
-		if (true) {
-			throw new UnsupportedOperationException(TODO.method());
+		byte[] temp = new byte[data.length-1];
+		for (int i = 0; i < temp.length; i++) {
+			temp[i] = data[i+1];
 		}
-
+		decoded = new String (temp);
 		return decoded;
 	}
 
 	public static byte[] marshallVoid(byte rpcid) {
 
-		byte[] encoded;
+		byte[] encoded = new byte[1];
 
 		// TODO: marshall RPC identifier in case of void type
-
-		if (true) {
-			throw new UnsupportedOperationException(TODO.method());
-		}
-
+		encoded[0] = rpcid;
 		return encoded;
 
 	}
 
 	public static void unmarshallVoid(byte[] data) {
-
+		
 		// TODO: unmarshall void type
 	}
 
@@ -81,26 +79,21 @@ public class RPCUtils {
 
 		byte[] encoded;
 
-		// TODO: marshall RPC identifier and string into byte array
-
-		if (true) {
-			throw new UnsupportedOperationException(TODO.method());
+		// TODO: marshall RPC identifier and Integer into byte array
+		encoded = new byte[5];
+		encoded[0] = rpcid;
+		ByteBuffer temp = ByteBuffer.allocate(4);
+		temp.putInt(x);
+		byte[] tallet = temp.array();
+		for (int i = 0; i < 4; i++) {
+			encoded[i+1] = tallet[i];
 		}
-
 		return encoded;
 	}
 
 	public static int unmarshallInteger(byte[] data) {
 
-		int decoded;
-
-		// TODO: unmarshall integer contained in data
-
-		if (true) {
-			throw new UnsupportedOperationException(TODO.method());
-		}
-
-		return decoded;
+		return ByteBuffer.wrap(data,1,data.length-1).getInt();
 
 	}
 }
